@@ -4,3 +4,20 @@ You need an enigma 2 compatible dreambox.
 More info on how to configure will follow soon.
 For questions checkout my blog at: http://techjunkie.eu or
 contact me on twitter @ninja98
+
+to use this with siriproxy add this to your config.yml:
+
+ - name: 'Dreambox plugin by @ninja98'
+      git: 'git@github.com:ninja98/SiriProxy-Dreambox-Enigma2-Plugin.git' # git works just like specifying in Gemfile
+      alias_file: "<full_path>/dreambox-aliases.yml" 
+      ip_dreambox: "<ip dreambox>"
+
+The alias file is an optional parameter and lets you create a yml file with your own channel aliases.
+
+fe.
+BBC1: BBC1 London
+BBC2: BBC2 England
+
+Will map BBC1 speech keyword returned by siri to BBC1 London channel name on your Dreambox.
+
+Have fun!
