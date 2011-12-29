@@ -22,7 +22,6 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   attr_accessor :mappings
 
   def initialize(config = {})
-puts "Test"
     @ip_dreambox = config["ip_dreambox"]
     @mappings = MAPPINGS
     if config["alias_file"] && FileTest.exists?(config["alias_file"])
