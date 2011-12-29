@@ -12,6 +12,7 @@ to use this with siriproxy add this to your config.yml:
       alias_file: "<full_path>/dreambox-aliases.yml" 
       ip_dreambox: "<ip dreambox>"
 
+Run 'siriproxy bundle' to get the plugin.
 The alias file is an optional parameter and lets you create a yml file with your own channel aliases.
 
 fe.
