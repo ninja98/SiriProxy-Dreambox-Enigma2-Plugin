@@ -4,7 +4,7 @@
 #NOTICE: Modifying these options in this file has no effect. You must put them in SiriProxy's config.yml!
 ##########################
 
-- name: 'dreambox'
+    - name: 'dreambox'
       git: 'git://github.com/ninja98/SiriProxy-Dreambox-Enigma2-Plugin.git' # git works just like specifying in Gemfile
       alias_file: "<full_path>/dreambox-aliases.yml"
       ip_dreambox: "<ip dreambox>"
