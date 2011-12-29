@@ -8,7 +8,7 @@ contact me on twitter @ninja98
 to use this with siriproxy add this to your config.yml:
 
  - name: 'Dreambox plugin by @ninja98'
-      git: 'git@github.com:ninja98/SiriProxy-Dreambox-Enigma2-Plugin.git' # git works just like specifying in Gemfile
+      git: 'git://github.com/SiriProxy-Dreambox-Enigma2-Plugin.git' # git works just like specifying in Gemfile
       alias_file: "<full_path>/dreambox-aliases.yml" 
       ip_dreambox: "<ip dreambox>"
 
