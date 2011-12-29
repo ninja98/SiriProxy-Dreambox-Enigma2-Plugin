@@ -20,4 +20,10 @@ BBC2: BBC2 England
 
 Will map BBC1 speech keyword returned by siri to BBC1 London channel name on your Dreambox.
 
+
+Some other notes:
+
+- The first siri request to SiriProxy will trigger the plugin init and load all channels from your dreambox
+  bouquets. Your first and second talk with siri might fail because of this. After that it's cached and it will work fine.
+
 Have fun!
