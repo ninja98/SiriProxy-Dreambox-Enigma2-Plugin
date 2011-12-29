@@ -30,33 +30,40 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     elsif config["alias_file"]
      puts "Specified User alias file not found, check config.yml : " + config["alias_file"]
     end
-    @@CHANNELS = load_channels if !@@CHANNELS 
+    if config["bouquet"]
+     @@CHANNELS = load_channels(config["bouquet"]) if !@@CHANNELS 
+    else
+     @@CHANNELS = load_channels if !@@CHANNELS 
+    end
     puts "Channels loaded ::: " + @@CHANNELS.size.to_s
     puts "Dreambox Enigma2 plugin succesfully initialized"
   end
 
-  def load_channels
+  def load_channels(onlybouquet=nil)
     #if you have custom configuration options, process them here!
     holder = {}
     puts "Initializing dreambox"
-     xml = open("http://#{@ip_dreambox.to_s}/web/getservices")
-     puts "Dreambox found - loading channels"
-     channel_list_url = "http://#{@ip_dreambox.to_s}/web/getservices?sRef="
-     doc = Hpricot(xml.read)
-     doc.search("//e2service").each do |bouquet|
-      bref = bouquet.search("//e2servicereference").inner_text
-      bname = bouquet.search("//e2servicename").inner_text
+    xml = open("http://#{@ip_dreambox.to_s}/web/getservices")
+    puts "Dreambox found - loading channels"
+    channel_list_url = "http://#{@ip_dreambox.to_s}/web/getservices?sRef="
+    doc = Hpricot(xml.read)
+    doc.search("//e2service").each do |bouquet|
+     bref = bouquet.search("//e2servicereference").inner_text
+     bname = bouquet.search("//e2servicename").inner_text
+     if !onlybouquet || onlybouquet == bname
+      puts "Loading bouquet : #{bname}"
       url = channel_list_url + URI.escape(bref)
       channelsxml = open(url)
       channelsdoc = Hpricot(channelsxml.read)
       # process channel info
       channelsdoc.search("//e2service") do |channel|
-        channel_name  = channel.search("//e2servicename").inner_text
-        channel_ref = channel.search("//e2servicereference").inner_text
-        holder[channel_name.strip.upcase] = {"sname" => channel_name , "bname" => bname , "bref" => bref , "sref" => channel_ref} if channel_name.size > 0 && channel_ref.size > 0
+       channel_name  = channel.search("//e2servicename").inner_text
+       channel_ref = channel.search("//e2servicereference").inner_text
+       holder[channel_name.strip.upcase] = {"sname" => channel_name , "bname" => bname , "bref" => bref , "sref" => channel_ref} if channel_name.size > 0 && channel_ref.size > 0
       end
-     end
-     return holder
+     end #bouquet check
+    end
+    return holder
   end
 
   def convert_time(e2time)
