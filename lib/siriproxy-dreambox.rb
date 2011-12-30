@@ -307,7 +307,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
 
   listen_for /(.*)what do you think(.*)/i do
     say_related_tweets
-    request_completed
+    #request_completed
    end
 
   listen_for /currently(.*) on tv/i do 
@@ -414,10 +414,9 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         if epg.size > 0 
          say_channel_info(epg[0])
          say_next_event_info(epg[1])
-	 request_completed 
         else
          say "No EPG details available"
-         request_completed 
+         #request_completed 
         end 
      else
         response = ask "Did not find that channel,..what was the name if the channel again?"
@@ -436,10 +435,10 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
           say "Can't find that channel"
         end
        
-        request_completed
+        #request_completed
         #response = ask('Spell it out for me')
      end
-     request_completed 
+     #request_completed 
   end
 
 end
