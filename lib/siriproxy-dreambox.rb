@@ -78,7 +78,6 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
    count_tweets = 0
    search = "\"#{channel}\" OR \"#{name}\" -rt -filter:links"
    puts "q = " + search
-   #1.upto 5 do |count|
     Twitter.search(search, :since_id => @@since_id, :rpp => 10, :lang => 'en', :result_type => "recent").map do |status|
        next if status.text.match(/^@/) #skip direct mentions
        text = status.text.gsub("@","").gsub("#","")
@@ -89,9 +88,6 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
        @@since_id = status.id if status.id.to_i > @@since_id
        count_tweets = count_tweets + 1
     end 
-    say ""
-    sleep 3
-   #end
    say "No comment" if count_tweets == 0
   end
 
@@ -262,9 +258,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   def say_next_event_info(epg)
     if epg[:title]
      say "Next on #{epg[:servicename]} is a program called : #{epg[:title]}" 
-     say epg[:description] if [:description]
-    else
-      say "Sorry, I don't know what's on next"
+     say epg[:description] if epg[:description] && epg[:description].size > 1
     end
          #say "The program starts at " + epg[:starttime].strftime('%H').to_s +
          #     ":" + epg[:starttime].strftime('%M').to_s +
