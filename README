@@ -29,5 +29,5 @@ Some other notes:
 - The first siri request to SiriProxy will trigger the plugin init and load all channels from your dreambox
   bouquets. Your first and second talk with siri might fail because of this. After that it's cached and it will work fine.
 - Check out my video at http://www.techjunkie.eu/2011/12/control-your-tv-using-your-iphone-and-siri-by-ninja0091/ for examples how to use this plugin.
-
+- If you run into ruby crashes with http.rb:799 install ruby like this: rvm install ruby-1.9.3-p0 --with-openssl-dir=/opt/local --with-iconv-dir=$rvm_path/usr
 Have fun!

@@ -5,6 +5,7 @@ require 'open-uri'
 require 'hpricot'
 require 'uri'
 require 'yaml'
+require 'twitter'
 
 #######
 # This is a "hello world" style plugin. It simply intercepts the phrase "test siri proxy" and responds
@@ -22,6 +23,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   attr_accessor :mappings
 
   def initialize(config = {})
+    @@since_id = 1 # used to get recent tweets
     @ip_dreambox = config["ip_dreambox"]
     @mappings = MAPPINGS
     if config["alias_file"] && FileTest.exists?(config["alias_file"])
@@ -70,6 +72,29 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
      return Time.new('1970-01-01') + e2time.to_i + 3600
   end
 
+  #siri will give its opinion on the program using tweets about the program
+  def say_tweets(channel, name) 
+   @@since_id = 1 # reset for now to get some comments
+   count_tweets = 0
+   search = "\"#{channel}\" OR \"#{name}\" -rt -filter:links"
+   puts "q = " + search
+   #1.upto 5 do |count|
+    Twitter.search(search, :since_id => @@since_id, :rpp => 10, :lang => 'en', :result_type => "recent").map do |status|
+       next if status.text.match(/^@/) #skip direct mentions
+       text = status.text.gsub("@","").gsub("#","")
+       #potential problem here with duplicate tweets - to be investigated
+       puts (Time.now - status.created_at).to_s + " seconds ago"
+       #say "#{status.from_user}: #{status.text}"
+       say "#{text}"
+       @@since_id = status.id if status.id.to_i > @@since_id
+       count_tweets = count_tweets + 1
+    end 
+    say ""
+    sleep 3
+   #end
+   say "No comment" if count_tweets == 0
+  end
+
   def search_epg(term)
     url = "http://#{@ip_dreambox}/web/epgsearch?search=#{URI.escape(term)}"
     event = {}
@@ -100,6 +125,18 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     #    modifications made to it)
   end 
   
+  def say_related_tweets
+     adress =  "http://#{@ip_dreambox.to_s}/web/subservices"
+     currentdoc = Hpricot(open(adress).read)
+     sref = currentdoc.search("//e2servicereference").inner_text
+     name = currentdoc.search("//e2servicename").inner_text
+     epg = get_epgdetails(sref)
+     if epg.size > 0
+        say_tweets(name, epg[0][:title]) 
+     end
+  end
+
+  
   def current_channel_info
      adress =  "http://#{@ip_dreambox.to_s}/web/subservices"
      currentdoc = Hpricot(open(adress).read)
@@ -121,8 +158,6 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
      epg = get_epgdetails(sref)
      if epg.size > 0
         say_next_event_info(epg[1]) 
-     else
-        say "Sorry, Can't find any info about the next program"
      end
   end
 
@@ -268,6 +303,18 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         end
       end
   end
+  
+  listen_for /dump channels/i do
+    @@CHANNELS.each do |k,v|
+      puts "|#{k}|"
+    end
+    say "Ok, check your console"
+  end
+
+  listen_for /(.*)what do you think(.*)/i do
+    say_related_tweets
+    request_completed
+   end
 
   listen_for /currently(.*) on tv/i do 
     current_channel_info
