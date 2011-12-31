@@ -1,3 +1,4 @@
+USED_LANGUAGE = :ger
 COMMANDS = {
              {:lang => :en,  :command => :next_channel} => /next channel(.*)/i,
              {:lang => :ger, :command => :next_channel} => /n.chster kanal(.*)/i,   

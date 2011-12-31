@@ -18,7 +18,12 @@ require 'language'
 class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   @@CHANNELS = nil
   @@CURRENT_CHANNEL = nil
-  @@LANG = :en #needs to be set correctly in code before startup (use :en or :ger)
+puts ENV.inspect
+  if ENV["SIRIPROXY_DREAMBOX_LANG"] 
+    @@LANG = ENV["SIRIPROXY_DREAMBOX_LANG"].to_sym  #needs to be set correctly in code before startup (use :en or :ger)
+  else
+    @@LANG = :en
+  end
   # These are some predined mappings , they are merged with the user defined mappings
   MAPPINGS = {'BBC1' => 'BBC 1 LONDON', 'BBC2' => 'BBC 2 ENGLAND', 'CNN International' => 'CNN INT.', 'CNN' => 'CNN INT.', 'THE NETHERLANDS' => 'NED', 'NETHERLANDS' => 'NED', 'ONE' => '1', 'TWO' => '2', 'THREE' => '3', 'FOUR' => '4', 'FIVE' => '5' , 'SIX' =>'6' , 'SEVEN' => '7', 'EIGHT' => '8' , 'NINE' => '9' , 'TEN' => '10'}
   attr_accessor :ip_dreambox
