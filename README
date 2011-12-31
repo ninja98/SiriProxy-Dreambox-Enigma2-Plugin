@@ -31,4 +31,22 @@ Some other notes:
 - use "rvmsudo SIRIPROXY_DREAMBOX_LANG=ger siriproxy server" if you want german language
 - Check out my video at http://www.techjunkie.eu/2011/12/control-your-tv-using-your-iphone-and-siri-by-ninja0091/ for examples how to use this plugin.
 - If you run into ruby crashes with http.rb:799 install ruby like this: rvm install ruby-1.9.3-p0 --with-openssl-dir=/opt/local --with-iconv-dir=$rvm_path/usr
+
+Things you can ask SiriProxy-Dreambox plugin - initial list - much more to follow..
+
+‘Siri switch to next channel’ – Zaps to next channel
+‘Siri switch to previous channel’ – Zaps to previous channel
+‘Siri whats currently on tv’ – Give info about current channel (if epg available)
+‘Siri whats currently on this channel’ – Give info about current channel (if epg available)
+‘Siri whats next on this channel’ – Siri will give info about next program on this channel (if epg available)
+‘Siri whats next on tv’ – Siri will give info about next program on the current channel (if epg available)
+‘Siri lets stop watching tv’ – Siri will set dreambox into standby mode
+‘Siri I want to watch tv’ – Siri will turn on dreambox
+‘Siri when is the next episode of the metalist on tv’ – Siri will tell you date and time of the next episode (if epg available)
+‘Siri what do you think of this program on tv?’ – Siri will give you its opinion of the current program
+‘Siri whats right now on tv’ – Give info about whats currently on tv
+‘Siri whats right now on BBC2′ – Give info about what’s currently playing on BBC2
+‘Siri switch to channel RTL2′ – Switch to channel with the name RTL2 (uses alias file for your own naming)
+
+
 Have fun!
