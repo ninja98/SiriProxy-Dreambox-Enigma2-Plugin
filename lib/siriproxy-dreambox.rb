@@ -152,7 +152,7 @@ puts ENV.inspect
      sref = currentdoc.search("//e2servicereference").inner_text
      name = currentdoc.search("//e2servicename").inner_text
      epg = get_epgdetails(sref)
-     if epg.size > 0
+     if epg.size > 0 && epg[0][:title]
         say_channel_info(epg[0]) 
      else
         say "You're watching #{name}"
