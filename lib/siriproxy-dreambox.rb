@@ -80,7 +80,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
    puts "q = " + search
     Twitter.search(search, :since_id => @@since_id, :rpp => 10, :lang => 'en', :result_type => "recent").map do |status|
        next if status.text.match(/^@/) #skip direct mentions
-       text = status.text.gsub("@","").gsub("#","")
+       text = status.text.gsub("@","").gsub(/ #[^ ]*/,"")
        text = text.gsub(/^watching/i,"").strip
        
        #added to prevent repeat of broadcast name.. disabled for now
