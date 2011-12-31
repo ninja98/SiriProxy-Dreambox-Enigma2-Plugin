@@ -82,7 +82,10 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
        next if status.text.match(/^@/) #skip direct mentions
        text = status.text.gsub("@","").gsub("#","")
        text = text.gsub(/^watching/i,"").strip
-       text = text.gsub(name,"").strip
+       
+       #added to prevent repeat of broadcast name.. disabled for now
+       #text = text.gsub(name,"").strip 
+
        #potential problem here with duplicate tweets - to be investigated
        puts (Time.now - status.created_at).to_s + " seconds ago"
        #say "#{status.from_user}: #{status.text}"
