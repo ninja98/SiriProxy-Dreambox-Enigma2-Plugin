@@ -18,7 +18,6 @@ require 'language'
 class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   @@CHANNELS = nil
   @@CURRENT_CHANNEL = nil
-puts ENV.inspect
   if ENV["SIRIPROXY_DREAMBOX_LANG"] 
     @@LANG = ENV["SIRIPROXY_DREAMBOX_LANG"].to_sym  #needs to be set correctly in code before startup (use :en or :ger)
   else
@@ -37,6 +36,7 @@ puts ENV.inspect
     if config["alias_file"] && FileTest.exists?(config["alias_file"])
      user_mappings = YAML.load(File.open(config["alias_file"])) 
      @mappings = @mappings.merge(user_mappings)
+     puts "Mappings used : " + @mappings.inspect
     elsif config["alias_file"]
      puts "Specified User alias file not found, check config.yml : " + config["alias_file"]
     end
