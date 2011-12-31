@@ -341,12 +341,14 @@ puts ENV.inspect
 
   listen_for COMMANDS[:lang => @@LANG, :command => :next_channel] do 
     next_channel
+    say "Ok"
     #request_completed
   end
 
   listen_for COMMANDS[:lang => @@LANG, :command => :previous_channel] do 
     previous_channel
-    request_completed
+    say "Ok"
+    #request_completed
   end
 
   listen_for COMMANDS[:lang => @@LANG, :command => :standby_dreambox] do 
