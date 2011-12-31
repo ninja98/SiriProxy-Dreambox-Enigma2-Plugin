@@ -81,10 +81,12 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     Twitter.search(search, :since_id => @@since_id, :rpp => 10, :lang => 'en', :result_type => "recent").map do |status|
        next if status.text.match(/^@/) #skip direct mentions
        text = status.text.gsub("@","").gsub("#","")
+       text = text.gsub(/^watching/i,"").strip
+       text = text.gsub(name,"").strip
        #potential problem here with duplicate tweets - to be investigated
        puts (Time.now - status.created_at).to_s + " seconds ago"
        #say "#{status.from_user}: #{status.text}"
-       say "#{text}"
+       say "#{text}" if text.size > 10
        @@since_id = status.id if status.id.to_i > @@since_id
        count_tweets = count_tweets + 1
     end 
