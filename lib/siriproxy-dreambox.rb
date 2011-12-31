@@ -6,6 +6,7 @@ require 'hpricot'
 require 'uri'
 require 'yaml'
 require 'twitter'
+require 'language'
 
 #######
 # This is a "hello world" style plugin. It simply intercepts the phrase "test siri proxy" and responds
@@ -17,6 +18,7 @@ require 'twitter'
 class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   @@CHANNELS = nil
   @@CURRENT_CHANNEL = nil
+  @@LANG = :ger #needs to be set correctly in code before startup (use :en or :ger)
   # These are some predined mappings , they are merged with the user defined mappings
   MAPPINGS = {'BBC1' => 'BBC 1 LONDON', 'BBC2' => 'BBC 2 ENGLAND', 'CNN International' => 'CNN INT.', 'CNN' => 'CNN INT.', 'THE NETHERLANDS' => 'NED', 'NETHERLANDS' => 'NED', 'ONE' => '1', 'TWO' => '2', 'THREE' => '3', 'FOUR' => '4', 'FIVE' => '5' , 'SIX' =>'6' , 'SEVEN' => '7', 'EIGHT' => '8' , 'NINE' => '9' , 'TEN' => '10'}
   attr_accessor :ip_dreambox
@@ -26,6 +28,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     @@since_id = 1 # used to get recent tweets
     @ip_dreambox = config["ip_dreambox"]
     @mappings = MAPPINGS
+    puts "Using language : #{@@LANG.to_s}"
     if config["alias_file"] && FileTest.exists?(config["alias_file"])
      user_mappings = YAML.load(File.open(config["alias_file"])) 
      @mappings = @mappings.merge(user_mappings)
@@ -310,64 +313,63 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     say "Ok, check your console"
   end
 
-  listen_for /(.*)what d?o? ?you think(.*)/i do
+  listen_for COMMANDS[:lang => @@LANG, :command => :voice_opinion]  do
     say_related_tweets
     #request_completed
-   end
-
-  listen_for /currently(.*) on tv/i do 
-    current_channel_info
-    request_completed
   end
 
-
-  listen_for /currently(.*) on this channel/i do 
+  listen_for COMMANDS[:lang => @@LANG, :command => :current_channel_info_1] do 
     current_channel_info
-    request_completed
+    #request_completed
   end
 
-  listen_for /next(.*) on this channel/i do 
+  listen_for COMMANDS[:lang => @@LANG, :command => :current_channel_info_2] do 
+    current_channel_info
+    #request_completed
+  end
+
+  listen_for COMMANDS[:lang => @@LANG, :command => :next_on_channel_info_1] do 
     next_on_channel_info
-    request_completed
+    #request_completed
   end
 
 
-  listen_for /next channel/i do 
+  listen_for COMMANDS[:lang => @@LANG, :command => :next_channel] do 
     next_channel
-    request_completed
+    #request_completed
   end
 
-  listen_for /previous channel/i do 
+  listen_for COMMANDS[:lang => @@LANG, :command => :previous_channel] do 
     previous_channel
     request_completed
   end
 
-  listen_for /stop(.*)watching(.*)tv/i do 
+  listen_for COMMANDS[:lang => @@LANG, :command => :standby_dreambox] do 
     standby_dreambox
     request_completed
   end
   
-  listen_for /want(.*)watch(.*)tv/i do
+  listen_for COMMANDS[:lang => @@LANG, :command => :start_dreambox] do
     start_dreambox
     request_completed
   end
 
 
-  listen_for /next episode of (.*) on TV/i do |term|
+  listen_for COMMANDS[:lang => @@LANG, :command => :find_next_episode] do |term|
     event = search_epg(term) 
     if event.size > 0
       say_epg_full(event)
       if (event[:timediff] > 0)
-       response = ask "Shall I set a timer to record it?"
-       if(response =~ /yes/i) #process their response
+       response = ask TRANSLATION[:lang => @@LANG, :response => :record_question]
+       if(response =~ TRANSLATION[:lang => @@LANG, :response => :yes]) #process their response
         set_timer(event)
-        say "Ok, I'll record it for you"
+        say TRANSLATION[:lang => @@LANG, :response => :confirm_record]
        else
         say "Ok, I won't record it"
        end
       else
         response = ask "You want to watch it now?"
-        if(response =~ /yes/i) #process their response
+        if(response =~ TRANSLATION[:lang => @@LANG, :response => :yes]) #process their response
          switch_channel(event[:sref])
          say "Ok here you go"
         else
@@ -379,17 +381,17 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     end
   end
 
-  listen_for /next(.*) on tv/i do 
+  listen_for COMMANDS[:lang => @@LANG, :command => :next_on_channel_info_2] do 
     next_on_channel_info
-    request_completed
+    #request_completed
   end
 
-  listen_for /right now on tv/i do 
+  listen_for COMMANDS[:lang => @@LANG, :command => :current_channel_info_3] do 
     current_channel_info
-    request_completed
+    #request_completed
   end
 
-  listen_for /right now on (.*)/i do |channel_data|
+  listen_for COMMANDS[:lang => @@LANG, :command => :now_on_channel_info_1] do |channel_data|
    channel_data = channel_data.strip.upcase
    found = find(channel_data)
    if found && found.size  > 0
@@ -407,8 +409,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
    end
   end
 
-  listen_for /channel (.*)/i do |channel_data|
-     # capture channel info - text after watch
+  listen_for COMMANDS[:lang => @@LANG, :command => :switch_channel] do |channel_data|
      channel_data = channel_data.strip.upcase
      # phase I - try perfect match
      found = find(channel_data)
