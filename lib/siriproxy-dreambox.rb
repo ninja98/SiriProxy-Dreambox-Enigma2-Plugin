@@ -310,7 +310,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     say "Ok, check your console"
   end
 
-  listen_for /(.*)what do you think(.*)/i do
+  listen_for /(.*)what d?o? ?you think(.*)/i do
     say_related_tweets
     #request_completed
    end
