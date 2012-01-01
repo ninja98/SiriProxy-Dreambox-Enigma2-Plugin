@@ -45,6 +45,16 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     else
      @@CHANNELS = load_channels if !@@CHANNELS 
     end
+puts config.inspect
+    if config["twitter_consumer_key"]
+     Twitter.configure do |config_twitter|
+      config_twitter.consumer_key = config["twitter_consumer_key"] 
+      config_twitter.consumer_secret = config["twitter_consumer_secret"]
+      config_twitter.oauth_token = config["twitter_oauth_token"] 
+      config_twitter.oauth_token_secret = config["twitter_token_secret"] 
+      puts "Twitter app initialized"
+     end
+    end
     puts "Channels loaded ::: " + @@CHANNELS.size.to_s
     puts "Dreambox Enigma2 plugin succesfully initialized"
   end
@@ -311,6 +321,34 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
       end
   end
   
+  def send_tweet(tweettext, negative)
+    adress =  "http://#{@ip_dreambox.to_s}/web/subservices"
+    currentdoc = Hpricot(open(adress).read)
+    sref = currentdoc.search("//e2servicereference").inner_text
+    name = currentdoc.search("//e2servicename").inner_text
+    epg = get_epgdetails(sref)
+    if epg.size > 0 && epg[0][:title]
+     tweettext = "Watching #{epg[0][:title]} on #{epg[0][:servicename]}. " + tweettext
+    end
+    if negative
+      tweettext =tweettext + " #mySiri-iTV /cc: @BitchAboutTV"
+    end
+    say "Ok, lets sent a tweet saying :" 
+    say tweettext
+    response = ask "Ready to send it?" 
+    if(response =~ TRANSLATION[:lang => @@LANG, :response => :yes]) #process their response
+      Twitter.update(tweettext)
+      say TRANSLATION[:lang => @@LANG, :response => :sent_tweet]
+    else
+      say "Ok, I won't send it"
+    end
+  end
+
+  def send_tweet_by_dialog(negative)
+    response = ask TRANSLATION[:lang => @@LANG, :response => :ask_opinion]  
+    send_tweet(response,negative) 
+  end
+  
   listen_for /dump channels/i do
     @@CHANNELS.each do |k,v|
       puts "|#{k}|"
@@ -447,11 +485,41 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         else
           say "Can't find that channel"
         end
-       
         #request_completed
-        #response = ask('Spell it out for me')
      end
      #request_completed 
   end
+
+  listen_for COMMANDS[:lang => @@LANG, :command => :bitch_about_tv_detailed] do |tweet_content|
+   if tweet_content
+    send_tweet(tweet_content, true)
+   end
+  end
+
+  listen_for COMMANDS[:lang => @@LANG, :command => :bitch_about_tv] do 
+    send_tweet_by_dialog(true)
+  end
+
+  listen_for COMMANDS[:lang => @@LANG, :command => :complain_about_tv_detailed] do |tweet_content|
+   if tweet_content
+    send_tweet(tweet_content, true)
+   end
+  end
+
+  listen_for COMMANDS[:lang => @@LANG, :command => :complain_about_tv] do 
+    send_tweet_by_dialog(true)
+  end
+
+  listen_for COMMANDS[:lang => @@LANG, :command => :like_about_tv_detailed] do |tweet_content|
+   if tweet_content
+    send_tweet(tweet_content, false)
+   end
+  end
+
+  listen_for COMMANDS[:lang => @@LANG, :command => :like_about_tv] do
+    send_tweet_by_dialog(false)
+  end
+
+
 
 end

@@ -9,3 +9,7 @@
       alias_file: "<full_path>/dreambox-aliases.yml"
       ip_dreambox: "<ip dreambox>"
       bouquet: "<name of bouquet to load>"
+      twitter_consumer_key: "YOUR_KEY" 
+      twitter_consumer_secret: "YOUR_SECRET"
+      twitter_oauth_token: "YOUR_TOKEN" 
+      twitter_oauth_token_secret: "YOUR_TOKEN_SECRET"

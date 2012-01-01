@@ -12,10 +12,16 @@ to use this with siriproxy add this to your config.yml:
       alias_file: "<full_path>/dreambox-aliases.yml" 
       ip_dreambox: "<ip dreambox>"
       bouquet: "<name of bouquet to load>"
+      twitter_consumer_key: "YOUR_KEY"
+      twitter_consumer_secret: "YOUR_SECRET"
+      twitter_oauth_token: "YOUR_TOKEN"
+      twitter_oauth_token_secret: "YOUR_TOKEN_SECRET"
 
 Run 'siriproxy bundle' to get the plugin.
 The alias_file parameter is an optional parameter and lets you create a yml file with your own channel aliases.
 The bouquet parameter is an optional parameter and lets limit the channels siri knows about to a particular bouquet.
+
+Twitter parameters are optional and enable the 'I want to bitch about the program on tv' feature.
 
 fe.
 BBC1: BBC1 London
@@ -47,6 +53,12 @@ Things you can ask SiriProxy-Dreambox plugin - initial list - much more to follo
 ‘Siri whats right now on tv’ – Give info about whats currently on tv
 ‘Siri whats right now on BBC2′ – Give info about what’s currently playing on BBC2
 ‘Siri switch to channel RTL2′ – Switch to channel with the name RTL2 (uses alias file for your own naming)
+
+new in V0.5 - complaining and liking stuff on TV. (twitter config params needed)
+'Siri I like the program on tv'
+'Siri I want to bitch about the current shit on tv'
+'Siri I want to approve the program on tv saying this is nice!'
+'Siri I want to bitch about the program on tv saying yuk what is this ?!'
 
 
 Have fun!

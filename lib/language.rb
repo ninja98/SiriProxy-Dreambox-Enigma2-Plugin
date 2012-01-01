@@ -25,7 +25,19 @@ COMMANDS = {
              {:lang => :en,  :command => :current_channel_info_3} => /(.*)right now on tv/i,
              {:lang => :ger, :command => :current_channel_info_3} => /(.*)derzeit im fernsehen/i,
              {:lang => :en,  :command => :switch_channel} => /channel (.*)/i,
-             {:lang => :ger, :command => :switch_channel} => /kanal (.*)/i 
+             {:lang => :ger, :command => :switch_channel} => /kanal (.*)/i,
+             {:lang => :en,  :command => :bitch_about_tv} => /bitch about (.*)tv/i,
+             {:lang => :ger, :command => :bitch_about_tv} => /beschweren(.*)fernsehen/i,
+             {:lang => :en,  :command => :complain_about_tv} => /complain about(.*)tv/i,
+             {:lang => :ger, :command => :complain_about_tv} => /beschweren(.*)fernsehen/i,
+             {:lang => :en,  :command => :bitch_about_tv_detailed} => /bitch about.* tv.*saying(.*)/i,
+             {:lang => :ger, :command => :bitch_about_tv_detailed} => /beschweren.*fernsehen(.*)/i ,
+             {:lang => :en,  :command => :complain_about_tv_detailed} => /complain about.* tv.*saying(.*)/i,
+             {:lang => :ger, :command => :complain_about_tv_detailed} => /beschweren.*fernsehen(.*)/i,
+             {:lang => :en,  :command => :like_about_tv} => /like(.*)tv/i,
+             {:lang => :ger, :command => :like_about_tv} => /ich mag(.*)fernsehen/i,
+             {:lang => :en,  :command => :like_about_tv_detailed} => /approve.*tv.*saying(.*)/i,
+             {:lang => :ger, :command => :like_about_tv_detailed} => /ich mag(.*)fernsehen(.*)/i 
 }
 
 TRANSLATION = {
@@ -36,5 +48,9 @@ TRANSLATION = {
              {:lang => :en, :response => :yes} => /yes/i,
              {:lang => :ger, :response => :yes} => /ja/i,
              {:lang => :en, :response => :no} => /no/i,
-             {:lang => :ger, :response => :no} => /nein/i 
+             {:lang => :ger, :response => :no} => /nein/i,
+             {:lang => :en, :response => :sent_tweet} => "Ok, I'l send it for you",
+             {:lang => :ger, :response => :sent_tweet} => "Ok, fertig",
+             {:lang => :en, :response => :ask_opinion} => "Ok, and what do you think of this program?",
+             {:lang => :ger, :response => :ask_opinion} => "Ok, und was haltest du von diesem Programm? "
             }
