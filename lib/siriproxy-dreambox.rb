@@ -335,7 +335,7 @@ puts config.inspect
     else
       tweettext =tweettext + " #iTVSiri "
     end
-    say "Ok, lets sent a tweet saying :" 
+    say "Ok, lets send a tweet saying :" 
     say tweettext
     response = ask "Ready to send it?" 
     if(response =~ TRANSLATION[:lang => @@LANG, :response => :yes]) #process their response
