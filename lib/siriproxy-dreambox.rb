@@ -351,6 +351,29 @@ puts config.inspect
     send_tweet(response,negative) 
   end
   
+  def help_on_dreambox
+   say "I'll control the TV for you, here is what I can do:"
+   say "This is help on English commands only for now although I understand some German, but I'm still learning that."
+   say "'Siri switch to next channel'. Zaps to next channel"
+   say "'Siri switch to previous channel'. Zaps to previous channel"
+   say "'Siri whats currently on tv'. Give info about current channel (if epg available)"
+   say "'Siri whats currently on this channel'. Give info about current channel (only if epg available)"
+   say "'Siri whats next on this channel'. I will give info about next program on this channel (if epg available)"
+   say "'Siri whats next on tv'. I will give info about next program on the current channel (if epg available)"
+   say "'Siri lets stop watching tv'. I will set dreambox into standby mode"
+   say "'Siri I want to watch tv'.  I will turn on dreambox"
+   say "'Siri when is the next episode of the mentalist on tv'. I will tell you date and time of the next episode (if epg available)"
+   say "'Siri what do you think of this program on tv?'. I will give you its opinion of the current program"
+   say "'Siri whats right now on tv'. I will provide info about whats currently on tv"
+   say "'Siri whats right now on BBC2'. I will provide info about what's currently playing on BBC2"
+   say "'Siri switch to channel RTL2'. I will switch to channel with the name RTL2 (uses alias file for your own naming)"
+   say "'Siri I like the program on tv'"
+   say "'Siri I want to bitch about the current shit on tv'. I help you manage your anger regarding the broadcast"
+   say "'Siri I want to approve the program on tv saying this is nice!'. Let people know you like the current program on TV"
+   say "'Siri I want to bitch about the program on tv saying yuk what is this? Terrible'. Release your frustration with the current broadcast"
+   say "I will understand similar sentences, Apple has made me very clever, so try me"
+  end
+
   listen_for /dump channels/i do
     @@CHANNELS.each do |k,v|
       puts "|#{k}|"
@@ -492,6 +515,7 @@ puts config.inspect
      #request_completed 
   end
 
+
   listen_for COMMANDS[:lang => @@LANG, :command => :bitch_about_tv_detailed] do |tweet_content|
    if tweet_content
     send_tweet(tweet_content, true)
@@ -522,6 +546,15 @@ puts config.inspect
     send_tweet_by_dialog(false)
   end
 
+  listen_for /itv help/i do
+    help_on_dreambox
+  end
+
+  listen_for /idv help/i do
+    help_on_dreambox
+  end
+  
+  
 
 
 end
