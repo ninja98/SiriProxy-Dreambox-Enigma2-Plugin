@@ -362,7 +362,7 @@ puts config.inspect
    say "'Siri whats next on tv'. I will give info about next program on the current channel (if epg available)"
    say "'Siri lets stop watching tv'. I will set dreambox into standby mode"
    say "'Siri I want to watch tv'.  I will turn on dreambox"
-   say "'Siri when is the next episode of the mentalist on tv'. I will tell you date and time of the next episode (if epg available)"
+   say "'Siri when is the next episode of the mentalist on tv'. I will tell you date and time of the next episode (if epg available). Also I'll ask you whether you want to record it. Wow."
    say "'Siri what do you think of this program on tv?'. I will give you its opinion of the current program"
    say "'Siri whats right now on tv'. I will provide info about whats currently on tv"
    say "'Siri whats right now on BBC2'. I will provide info about what's currently playing on BBC2"
