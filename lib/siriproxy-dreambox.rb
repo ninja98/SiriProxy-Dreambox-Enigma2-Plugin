@@ -332,6 +332,8 @@ puts config.inspect
     end
     if negative
       tweettext =tweettext + " #mySiri-iTV /cc: @BitchAboutTV"
+    else
+      tweettext =tweettext + " #mySiri-iTV"
     end
     say "Ok, lets sent a tweet saying :" 
     say tweettext
