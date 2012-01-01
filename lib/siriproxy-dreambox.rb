@@ -331,9 +331,9 @@ puts config.inspect
      tweettext = "Watching #{epg[0][:title]} on #{epg[0][:servicename]}. " + tweettext
     end
     if negative
-      tweettext =tweettext + " #mySiri-iTV /cc: @BitchAboutTV"
+      tweettext =tweettext + " #iTVSiri /cc: @BitchAboutTV"
     else
-      tweettext =tweettext + " #mySiri-iTV"
+      tweettext =tweettext + " #iTVSiri "
     end
     say "Ok, lets sent a tweet saying :" 
     say tweettext
