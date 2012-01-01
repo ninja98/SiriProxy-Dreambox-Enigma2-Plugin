@@ -26,6 +26,8 @@ Twitter parameters are optional and enable the 'I want to bitch about the progra
 fe.
 BBC1: BBC1 London
 BBC2: BBC2 England
+BBC 1: BBC1 London
+BBC 2: BBC2 England
 
 Will map BBC1 speech keyword returned by siri to BBC1 London channel name on your Dreambox.
 Also see the example directory for an example file you can use as a template
