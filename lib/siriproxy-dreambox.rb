@@ -36,6 +36,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     if config["alias_file"] && FileTest.exists?(config["alias_file"])
      user_mappings = YAML.load(File.open(config["alias_file"])) 
      @mappings = @mappings.merge(user_mappings)
+     puts "User alias file found"
      puts "Mappings used : " + @mappings.inspect
     elsif config["alias_file"]
      puts "Specified User alias file not found, check config.yml : " + config["alias_file"]
@@ -45,7 +46,6 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     else
      @@CHANNELS = load_channels if !@@CHANNELS 
     end
-puts config.inspect
     if config["twitter_consumer_key"]
      Twitter.configure do |config_twitter|
       config_twitter.consumer_key = config["twitter_consumer_key"] 
