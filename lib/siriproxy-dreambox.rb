@@ -29,6 +29,8 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   attr_accessor :mappings
 
   def initialize(config = {})
+
+puts config.inspect
     @@since_id = 1 # used to get recent tweets
     @ip_dreambox = config["ip_dreambox"]
     @mappings = MAPPINGS
@@ -119,7 +121,20 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     event = {}
     searchresults = open(url)
     searchresultsdoc = Hpricot(searchresults.read) 
-    nextevent = searchresultsdoc.search("//e2event")[0]
+    nextevents = searchresultsdoc.search("//e2event")
+    nextevent = nil
+    # filter on channels in bouquet
+
+    nextevents.each do |ev|
+      nextname = ev.search("//e2eventservicename").inner_text 
+
+      if  @@CHANNELS[nextname.strip.upcase]
+        puts "found"
+        nextevent = ev 
+        break 
+      end
+    end
+
     if nextevent 
       event = parse_epg_event(nextevent)
     end
