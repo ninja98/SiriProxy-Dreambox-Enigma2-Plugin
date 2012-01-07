@@ -35,7 +35,7 @@ puts config.inspect
     @ip_dreambox = config["ip_dreambox"]
     @mappings = MAPPINGS
     puts "Using language : #{@@LANG.to_s}"
-    puts "Using timezone offset : #{Time.now.gmt_offset}"
+    puts "Using GMT timezone offset : #{Time.now.gmt_offset} seconds"
     if config["alias_file"] && FileTest.exists?(config["alias_file"])
      user_mappings = YAML.load(File.open(config["alias_file"])) 
      @mappings = @mappings.merge(user_mappings)
