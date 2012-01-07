@@ -30,7 +30,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
 
   def initialize(config = {})
 
-puts config.inspect
+    puts config.inspect
     @@since_id = 1 # used to get recent tweets
     @ip_dreambox = config["ip_dreambox"]
     @mappings = MAPPINGS
