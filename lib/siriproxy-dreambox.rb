@@ -89,7 +89,7 @@ puts config.inspect
   end
 
   def convert_time(e2time)
-     return Time.new('1970-01-01') + e2time.to_i + 3600
+     return Time.new('1970-01-01') + e2time.to_i + Time.new.gmt_offset 
   end
 
   #siri will give its opinion on the program using tweets about the program
@@ -254,7 +254,7 @@ puts config.inspect
     event = {}
     event[:starttime] = Time.new('1970-01-01') + epgevent.search("//e2eventstart").inner_text.to_i 
     #timezone correction - need to look at this later
-    event[:starttime] = event[:starttime] + 3600
+    event[:starttime] = event[:starttime] + Time.new.gmt_offset 
     event[:endtime] = event[:starttime] + epgevent.search("//e2eventduration").inner_text.to_i
     event[:title] = epgevent.search("//e2eventtitle").inner_text
     event[:description] = epgevent.search("//e2eventdescription").inner_text
