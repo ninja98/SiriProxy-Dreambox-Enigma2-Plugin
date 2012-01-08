@@ -677,7 +677,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   end
 
   listen_for COMMANDS[:lang => @@LANG, :command => :switch_channel] do |channel_data|
-    channel_data = channel_data.strip.upcase
+    channel_data = channel_data.to_s.strip.upcase
     # phase I - try perfect match
     found = find(channel_data)
     if found 
