@@ -63,5 +63,18 @@ new in V0.5 - complaining and liking stuff on TV. (twitter config params needed)
 'Siri I want to approve the program on tv saying this is nice!'
 'Siri I want to bitch about the program on tv saying yuk what is this ?!'
 
+new in V0.6 - You can now ask Siri about live soccer/football matches
+NOTE THESE ARE LIVE MATCHES AND NOT REPEATS - EPG IS SKIPPED HERE - WE GO STRAIGHT TO THE INTERNET
+'Siri what matches are on tv today'
+'Siri when is the next match of Manchester United on tv?'
+'Siri when is the match of Chelsea on TV tommorow?'
+'Siri is there a match of Ajax on TV this week?'
+The queries use a cloudwebservice to get the results. The results
+are filtered by channels you actually have specified in your bouquet.
+If you setup your loaded bouquet properly this can be a very cool feature.
+
+
+
+
 
 Have fun!
