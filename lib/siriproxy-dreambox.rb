@@ -488,7 +488,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   end
 
   #Siri is there a match of Manchester on TV today
-  listen_for /match.*of (.*) on TV( today| tommorow| this week|.*)/i   do |team,period|
+  listen_for /match.*of (.*) on TV( today| tomorrow| this week|.*)/i   do |team,period|
     puts "Looking up matches for #{team}"
     puts "Period #{period}"
     datefrom = Time.now
@@ -499,7 +499,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
       dateto = Time.now
     end
 
-    if period.match /tommorow/i
+    if period.match /tomorrow/i
       datefrom = Time.now + (3600*24)
       dateto = Time.now + (3600*24)
     end
@@ -544,7 +544,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     end 
   end
 
-  listen_for /match.*TV( today| tommorow).*/i do |period|
+  listen_for /match.*TV( today| tomorrow).*/i do |period|
     puts "Period #{period}"
     datefrom = Time.now
     dateto = Time.now + (3600*24*7)
@@ -554,7 +554,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
       dateto = Time.now
     end
 
-    if period.match /tommorow/i
+    if period.match /tomorrow/i
       datefrom = Time.now + (3600*24)
       dateto = Time.now + (3600*24)
     end
