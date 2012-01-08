@@ -534,7 +534,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
       if fails.size == 0 
         say "I did not find matches of #{team} you can watch #{period} "
       else
-        puts "Failed channels::" + fails.inspect
+        #puts "Failed channels::" + fails.inspect
         if fails.size == 1
           say "I did find one match of #{fails[fails.keys[0]][:matchinfo]['home_team'].to_s.capitalize} against #{fails[fails.keys[0]][:matchinfo]['away_team'].to_s.capitalize} on the channels #{fails.keys[0].to_s}, but this is not a channel that you have subscribed to."
         else
