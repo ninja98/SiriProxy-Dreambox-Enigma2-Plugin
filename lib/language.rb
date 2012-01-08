@@ -1,8 +1,8 @@
 USED_LANGUAGE = :ger
 COMMANDS = {
-  {:lang => :en,  :command => :next_channel} => /next channel(.*)/i,
+  {:lang => :en,  :command => :next_channel} => /next channel(.*)|next program/i,
   {:lang => :ger, :command => :next_channel} => /n.chster kanal(.*)/i,
-  {:lang => :en , :command => :previous_channel} => /previous channel(.*)/i,
+  {:lang => :en , :command => :previous_channel} => /previous channel(.*)|previous program/i,
   {:lang => :ger, :command => :previous_channel} => /letzter kanal(.*)/i,
   {:lang => :en,  :command => :current_channel_info_1} => /currently(.*) on tv/i,
   {:lang => :ger, :command => :current_channel_info_1} => /derzeit(.*) I'm fernsehen/i,
