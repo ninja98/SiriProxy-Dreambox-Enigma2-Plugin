@@ -24,7 +24,7 @@ COMMANDS = {
   {:lang => :ger, :command => :now_on_channel_info_1} => /derzeit auf (.*)/i,
   {:lang => :en,  :command => :current_channel_info_3} => /(.*)right now on tv/i,
   {:lang => :ger, :command => :current_channel_info_3} => /(.*)derzeit im fernsehen/i,
-  {:lang => :en,  :command => :switch_channel} => /[p|c][r|h][o|a][g|n][r|n][a|e][m|l] (.*)/i,
+  {:lang => :en,  :command => :switch_channel} => /[p|c][r|h][o|a][g|n][r|n][a|e][m|l][t|o| ]{0,3} (.*)/i,
   {:lang => :ger, :command => :switch_channel} => /kanal (.*)/i,
   {:lang => :en,  :command => :bitch_about_tv} => /bitch about (.*)tv/i,
   {:lang => :ger, :command => :bitch_about_tv} => /beschweren(.*)fernsehen/i,

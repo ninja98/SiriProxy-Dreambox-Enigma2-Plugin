@@ -18,6 +18,7 @@ require 'json'
 ######
 class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   @@CHANNELS = nil
+  @@lastmatches  = {}
   @@CURRENT_CHANNEL = nil
   if ENV["SIRIPROXY_DREAMBOX_LANG"]
     @@LANG = ENV["SIRIPROXY_DREAMBOX_LANG"].to_sym  #needs to be set correctly in code before startup (use :en or :ger)
@@ -25,7 +26,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     @@LANG = :en
   end
   # These are some predined mappings , they are merged with the user defined mappings
-  MAPPINGS = {'BBC1' => 'BBC 1 LONDON', 'BBC2' => 'BBC 2 ENGLAND', 'CNN International' => 'CNN INT.', 'CNN' => 'CNN INT.', 'THE NETHERLANDS' => 'NED', 'NETHERLANDS' => 'NED', 'ONE' => '1', 'TWO' => '2', 'THREE' => '3', 'FOUR' => '4', 'FIVE' => '5' , 'SIX' =>'6' , 'SEVEN' => '7', 'EIGHT' => '8' , 'NINE' => '9' , 'TEN' => '10'}
+  MAPPINGS = {}
   attr_accessor :ip_dreambox
   attr_accessor :mappings
 
@@ -337,8 +338,12 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     end
   end
 
-  def say_live_match(match_info)
-    say "I found a live match for you"
+  def say_live_match(match_info,count)
+    if count == 1
+      say "I found a live match for you, number #{count}"
+    else
+      say "I found another live match for you, number #{count}"
+    end
     #puts match_info.inspect
     #{:channel=>{"sname"=>"Sky Calcio 1", "bname"=>"Favs", "bref"=>"1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.aa83e.tv\" ORDER BY bouquet", "sref"=>"1:0:1:2DC7:1A2C:FBFF:820000:0:0:0:"}, :matchinfo=>{"source"=>"lst", "id"=>"227194", "home_team"=>"internazionale", "away_team"=>"parma", "competion"=>"Serie A", "livenow"=>true, "date"=>"2012-01-07", "time"=>"2:45pm", "fulltime"=>"2012-01-07 14:45:00 -0500", "type"=>"Live",
 
@@ -513,12 +518,16 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     matches = results[0]
     fails = results[1]
     if matches.size > 0
+      count = 1
+      @@lastmatches = {}
       matches.each do |channel_name,match|
         #epg = get_epgdetails(match[:channel]["sref"])
         #puts "looked up epg" + epg.inspect
         #priority to top countries
         if  match[:channel][:topcountry] &&  match[:channel][:topcountry] == 1
-          say_live_match(match) 
+          @@lastmatches << match
+          say_live_match(match, count)
+          count = count + 1 
         end
       end
       matches.each do |channel_name,match|

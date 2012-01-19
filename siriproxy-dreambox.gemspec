@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "siriproxy-dreambox"
-  s.version     = "0.6.0"
+  s.version     = "0.6.1"
   s.authors     = ["ninja98"]
   s.email       = [""]
   s.homepage    = ""
