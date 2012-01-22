@@ -18,7 +18,7 @@ require 'json'
 ######
 class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   @@CHANNELS = nil
-  @@lastmatches  = {}
+  @@lastmatches  = []
   @@CURRENT_CHANNEL = nil
   if ENV["SIRIPROXY_DREAMBOX_LANG"]
     @@LANG = ENV["SIRIPROXY_DREAMBOX_LANG"].to_sym  #needs to be set correctly in code before startup (use :en or :ger)
@@ -519,7 +519,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     fails = results[1]
     if matches.size > 0
       count = 1
-      @@lastmatches = {}
+      @@lastmatches = []
       matches.each do |channel_name,match|
         #epg = get_epgdetails(match[:channel]["sref"])
         #puts "looked up epg" + epg.inspect
