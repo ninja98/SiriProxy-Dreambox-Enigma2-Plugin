@@ -461,7 +461,16 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         parsedtime = Time.new(date[0..3].to_i, date[5..6].to_i, date[8..9].to_i, date[11..12].to_i, date[14..15].to_i, date[17..18].to_i, date[20..22]+ ":" + date[23..24])
         v["localtime"] = parsedtime.localtime 
         v[:localruntime] = parsedtime.localtime
-        next if parsedtime.localtime < (Time.now - 3600 - 2700) #&& !v["livenow"] # skip if match ended
+        if parsedtime.localtime < (Time.now - 3600 - 2700) #&& !v["livenow"] # skip if match ended
+           puts "Expired... " 
+           next
+        else
+           if parsedtime.localtime > Time.now
+            puts "Hasnt started yet :  "  + parsedtime.localtime.to_s
+            next if onlylive
+           end
+        end
+   
         v["channels"].each do |channel_name,meta|
           puts "Checking if #{channel_name.upcase} can be found (mapped or in epg)"
           foundit = find(channel_name.upcase)
@@ -496,6 +505,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   listen_for /match.*of (.*) on TV( right now|today| tomorrow| this week|.*)/i   do |team,period|
     puts "Looking up matches for #{team}"
     puts "Period #{period}"
+    notonly = false
     datefrom = Time.now
     dateto = Time.now + (3600*24*7)
 
@@ -507,6 +517,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     if period.match /right now/i
       datefrom = Time.now
       dateto = Time.now
+      nowonly = true
     end
 
     if period.match /tomorrow/i
@@ -519,7 +530,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     end
 
 
-    results = get_live_schedule(datefrom,dateto,false,true,team)
+    results = get_live_schedule(datefrom,dateto,nowonly,true,team)
     matches = results[0]
     fails = results[1]
     if matches.size > 0
@@ -563,6 +574,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     puts "Period #{period}"
     datefrom = Time.now
     dateto = Time.now + (3600*24*7)
+    livenow = false
 
     if period.match /today/i
       datefrom = Time.now
@@ -571,6 +583,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     if period.match /right now/i
       datefrom = Time.now
       dateto = Time.now
+      livenow = true
     end
 
     if period.match /tomorrow/i
@@ -581,7 +594,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     if period.match /this week/i
       dateto = Time.now + (3600*24*7)
     end
-    results = get_live_schedule(datefrom,dateto,false)
+    results = get_live_schedule(datefrom,dateto,livenow)
     
     matches = results[0]
     fails = results[1]
