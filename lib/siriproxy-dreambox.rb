@@ -455,7 +455,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
 
       if v["type"] == 'Live' || !onlylive 
         puts "Found potential match candidate :: "
-        #v.inspect
+        puts v.inspect
         date = v["fulltime"]
         puts "startdate match :" + date
         parsedtime = Time.new(date[0..3].to_i, date[5..6].to_i, date[8..9].to_i, date[11..12].to_i, date[14..15].to_i, date[17..18].to_i, date[20..22]+ ":" + date[23..24])
@@ -474,7 +474,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
           else
             include = false
             failedchannels[channel_name] = {:channel_name => channel_name, :matchinfo => v}
-            puts "Result : " + foundit.inspect
+            puts "Result fail : " + foundit.inspect
           end 
           # check time
           #include
@@ -493,7 +493,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   end
 
   #Siri is there a match of Manchester on TV today
-  listen_for /match.*of (.*) on TV( today| tomorrow| this week|.*)/i   do |team,period|
+  listen_for /match.*of (.*) on TV( right now|today| tomorrow| this week|.*)/i   do |team,period|
     puts "Looking up matches for #{team}"
     puts "Period #{period}"
     datefrom = Time.now
@@ -559,12 +559,16 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     end 
   end
 
-  listen_for /match.*TV( today| tomorrow).*/i do |period|
+  listen_for /match.*TV( right now| today| tomorrow).*/i do |period|
     puts "Period #{period}"
     datefrom = Time.now
     dateto = Time.now + (3600*24*7)
 
     if period.match /today/i
+      datefrom = Time.now
+      dateto = Time.now
+    end
+    if period.match /right now/i
       datefrom = Time.now
       dateto = Time.now
     end
@@ -577,7 +581,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     if period.match /this week/i
       dateto = Time.now + (3600*24*7)
     end
-    results = get_live_schedule(datefrom,dateto)
+    results = get_live_schedule(datefrom,dateto,true))
     
     matches = results[0]
     fails = results[1]
