@@ -581,7 +581,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     if period.match /this week/i
       dateto = Time.now + (3600*24*7)
     end
-    results = get_live_schedule(datefrom,dateto,true))
+    results = get_live_schedule(datefrom,dateto,true)
     
     matches = results[0]
     fails = results[1]
