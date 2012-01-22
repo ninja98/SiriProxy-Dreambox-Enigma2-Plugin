@@ -340,14 +340,14 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
 
   def say_live_match(match_info,count)
     if count == 1
-      say "I found a live match for you, number #{count}"
+      say "I found a match for you, number #{count}"
     else
-      say "I found another live match for you, number #{count}"
+      say "I found another match for you, number #{count}"
     end
     #puts match_info.inspect
     #{:channel=>{"sname"=>"Sky Calcio 1", "bname"=>"Favs", "bref"=>"1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.aa83e.tv\" ORDER BY bouquet", "sref"=>"1:0:1:2DC7:1A2C:FBFF:820000:0:0:0:"}, :matchinfo=>{"source"=>"lst", "id"=>"227194", "home_team"=>"internazionale", "away_team"=>"parma", "competion"=>"Serie A", "livenow"=>true, "date"=>"2012-01-07", "time"=>"2:45pm", "fulltime"=>"2012-01-07 14:45:00 -0500", "type"=>"Live",
 
-    say "It's on #{match_info[:channel]["sname"]} #{match_info[:channel][:country]}"  
+    say "It's a #{match_info[:matchinfo]["type"]} broadcast on #{match_info[:channel]["sname"]} #{match_info[:channel][:country]}"  
     say "#{match_info[:matchinfo]["home_team"].capitalize} plays against #{match_info[:matchinfo]["away_team"].capitalize} in the #{match_info[:matchinfo]["competion"].capitalize}"  
     say "It starts at #{match_info[:matchinfo][:localruntime].strftime('%H')}:#{match_info[:matchinfo][:localruntime].strftime('%M')} on #{match_info[:matchinfo][:localruntime].strftime('%A')}"
     #puts match_info[:matchinfo].inspect
@@ -519,7 +519,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     end
 
 
-    results = get_live_schedule(datefrom,dateto,true,true,team)
+    results = get_live_schedule(datefrom,dateto,false,true,team)
     matches = results[0]
     fails = results[1]
     if matches.size > 0
@@ -581,7 +581,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     if period.match /this week/i
       dateto = Time.now + (3600*24*7)
     end
-    results = get_live_schedule(datefrom,dateto,true)
+    results = get_live_schedule(datefrom,dateto,false)
     
     matches = results[0]
     fails = results[1]
