@@ -453,7 +453,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     selected = schedule.select do |v|
       include = false
 
-      if v["type"] == 'Live' || !onlylive 
+      if true || v["type"] == 'Live' || !onlylive 
         puts "Found potential match candidate :: "
         puts v.inspect
         date = v["fulltime"]
@@ -581,14 +581,14 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
       dateto = Time.now
     end
     if period.match /right now/i
-      datefrom = Time.now
-      dateto = Time.now
+      datefrom = Time.now - (6*3600)
+      dateto = Time.now - (6*3600)
       livenow = true
     end
 
     if period.match /tomorrow/i
-      datefrom = Time.now + (3600*24)
-      dateto = Time.now + (3600*24)
+      datefrom = Time.now + (3600*24) - (6*3600)
+      dateto = Time.now + (3600*24) - (6*3600)
     end
     # disabled for now - might cause backend side blowup
     if period.match /this week/i
