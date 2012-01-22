@@ -504,6 +504,11 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
       dateto = Time.now
     end
 
+    if period.match /right now/i
+      datefrom = Time.now
+      dateto = Time.now
+    end
+
     if period.match /tomorrow/i
       datefrom = Time.now + (3600*24)
       dateto = Time.now + (3600*24)
@@ -535,7 +540,8 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         #puts "looked up epg" + epg.inspect
         #priority to top countries
         if  !match[:channel][:topcountry] ||  match[:channel][:topcountry] == 0
-          say_live_match(match) 
+          say_live_match(match, count) 
+          count = count +1
         end
       end
 
@@ -576,10 +582,12 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     matches = results[0]
     fails = results[1]
     if matches.size > 0
+      count  = 1
       matches.each do |channel_name,match|
         #epg = get_epgdetails(match[:channel]["sref"])
         #puts "looked up epg" + epg.inspect
-        say_live_match(match) 
+        say_live_match(match, count) 
+        count  = count +1
       end
     else
       say "There are no live matches you can view at the moment"
