@@ -503,7 +503,10 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
   end
 
   #Siri is there a match of Manchester on TV today
-  listen_for /match.*of (.*) on TV( right now|today| tomorrow| this week|.*)/i   do |team,period|
+  listen_for /([^ ]*) match.*of (.*) on TV( right now|today| tomorrow| this week|.*)/i   do |saylive,team,period|
+    if saylive.strip.upcase == "LIVE" || saylive.strip.upcase == "LIFE"
+     liveindicator = true
+    end
     puts "Looking up matches for #{team}"
     puts "Period #{period}"
     nowonly = false
@@ -573,12 +576,17 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     end 
   end
 
-  listen_for /match.*TV( right now| today| tomorrow| this week).*/i do |period|
+  listen_for /([^ ]*) match.*TV( right now| today| tomorrow| this week).*/i do |saylive, period|
     puts "Period #{period}"
     datefrom = Time.now
     dateto = Time.now + (3600*24*7)
     liveindicator = false
+    #liveindicator =  true if live.match(/live$/i) 
     listfuture = true
+    if saylive.strip.upcase == "LIVE" || saylive.strip.upcase == "LIFE"
+     liveindicator = true
+    end
+   
     if period.match /today/i
       datefrom = Time.now - (6*3600)
       dateto = Time.now - (6*3600)
