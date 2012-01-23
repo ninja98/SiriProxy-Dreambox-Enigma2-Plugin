@@ -450,6 +450,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     #puts schedule.class.name.to_s
     hotchannels = {}
     failedchannels = {}
+    c = 0 
     selected = schedule.select do |v|
       include = false
 
@@ -470,15 +471,15 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
             next if onlylive
            end
         end
-   
         v["channels"].each do |channel_name,meta|
+          c = c + 1
           puts "Checking if #{channel_name.upcase} can be found (mapped or in epg)"
           foundit = find(channel_name.upcase)
           if foundit
             include = true
             foundit[:topcountry] =  meta["topcountry"]
             foundit[:country]   =   meta["country"]
-            hotchannels[channel_name] = { :channel => foundit, :matchinfo => v}
+            hotchannels[c.to_s + "-" + channel_name] = { :channel => foundit, :matchinfo => v}
             puts "Result : " + foundit.inspect
           else
             include = false
@@ -490,7 +491,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         end 
       end
     end
-    #puts "HC:" + hotchannels.inspect
+    puts "HC:" + hotchannels.inspect
     return [hotchannels, failedchannels]
   end
 
