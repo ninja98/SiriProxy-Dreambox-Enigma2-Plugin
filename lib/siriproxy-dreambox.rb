@@ -340,9 +340,9 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
 
   def say_live_match(match_info,count)
     if count == 1
-      say "I found a match for you, number #{count}"
+      say "You might like this first match"
     else
-      say "I found another match for you, number #{count}"
+      say "Another match, number #{count}"
     end
     #puts match_info.inspect
     #{:channel=>{"sname"=>"Sky Calcio 1", "bname"=>"Favs", "bref"=>"1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"userbouquet.aa83e.tv\" ORDER BY bouquet", "sref"=>"1:0:1:2DC7:1A2C:FBFF:820000:0:0:0:"}, :matchinfo=>{"source"=>"lst", "id"=>"227194", "home_team"=>"internazionale", "away_team"=>"parma", "competion"=>"Serie A", "livenow"=>true, "date"=>"2012-01-07", "time"=>"2:45pm", "fulltime"=>"2012-01-07 14:45:00 -0500", "type"=>"Live",
@@ -542,6 +542,9 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     if matches.size > 0
       count = 1
       @@lastmatches = []
+      plural = ""
+      plural = "s" if matches.size > 1
+      say "I found #{matches.size} broadcast#{plural}"
       matches.each do |channel_name,match|
         #epg = get_epgdetails(match[:channel]["sref"])
         #puts "looked up epg" + epg.inspect
@@ -612,6 +615,9 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
     fails = results[1]
     if matches.size > 0
       count  = 1
+      plural = ""
+      plural = "s" if matches.size > 1
+      say "I found #{matches.size} broadcast#{plural}"
       matches.each do |channel_name,match|
         #epg = get_epgdetails(match[:channel]["sref"])
         #puts "looked up epg" + epg.inspect
