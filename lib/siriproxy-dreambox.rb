@@ -360,7 +360,16 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         switch_channel(match_info[:channel]["sref"])
         say "Ok here you go"
       else
-        say "Ok, I thought so"
+        say "Lets see.."
+      end
+      if response.scan(/enough/i)
+       return "STOP"
+      end
+      if response.scan(/stop/i)
+       return "STOP"
+      end
+      if response.scan(/cancel/i)
+       return "STOP"
       end
     else
       minutes = ((match_info[:matchinfo][:localruntime] - Time.now) / 60).round.to_i
@@ -437,6 +446,8 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
 
     hotchannels = {}
     failedchannels = {}
+    say "Checking my sources .. one moment"
+    #request_completed
     adress =  "http://sirilive.cloudfoundry.com/live2?fromdate=#{fromdate.strftime('%m')}-#{fromdate.strftime('%d')}-#{fromdate.strftime('%Y')}&todate=#{todate.strftime('%m')}-#{todate.strftime('%d')}-#{todate.strftime('%Y')}&keyword=#{URI.escape(keyword)}"
     puts adress
     begin
@@ -551,7 +562,11 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         #priority to top countries
         if  match[:channel][:topcountry] &&  match[:channel][:topcountry] == 1
           @@lastmatches << match
-          say_live_match(match, count)
+          resp = say_live_match(match, count)
+          if resp && resp == "STOP"
+           say "Ok, Fine"
+           break
+          end
           count = count + 1 
         end
       end
@@ -560,7 +575,11 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         #puts "looked up epg" + epg.inspect
         #priority to top countries
         if  !match[:channel][:topcountry] ||  match[:channel][:topcountry] == 0
-          say_live_match(match, count) 
+          resp = say_live_match(match, count) 
+          if resp && resp == "STOP"
+           say "Ok, Fine"
+           break
+          end
           count = count +1
         end
       end
@@ -621,7 +640,11 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
       matches.each do |channel_name,match|
         #epg = get_epgdetails(match[:channel]["sref"])
         #puts "looked up epg" + epg.inspect
-        say_live_match(match, count) 
+        resp = say_live_match(match, count) 
+        if resp && resp == "STOP"
+           say "Ok, Fine"
+           break
+        end
         count  = count +1
       end
     else
@@ -692,7 +715,7 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
           switch_channel(event[:sref])
           say "Ok here you go"
         else
-          say "Ok, I thought so"
+          say "I thought so"
         end
       end
     else
