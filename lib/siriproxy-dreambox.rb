@@ -360,15 +360,15 @@ class SiriProxy::Plugin::Dreambox < SiriProxy::Plugin
         switch_channel(match_info[:channel]["sref"])
         say "Ok here you go"
       else
-        say "Lets see.."
+        say "Ok.."
       end
-      if response.scan(/enough/i)
+      if response.scan(/enough/i)[0]
        return "STOP"
       end
-      if response.scan(/stop/i)
+      if response.scan(/stop/i)[0]
        return "STOP"
       end
-      if response.scan(/cancel/i)
+      if response.scan(/cancel/i)[0]
        return "STOP"
       end
     else
